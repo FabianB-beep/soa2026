@@ -16,14 +16,18 @@ const CORNHOLE_TEAMS_CONFIG = [
   { id:  1, name: "Awmb,akwmv",                         group: "A" },
   { id:  3, name: "PWG Turbo",                           group: "A" },
   { id:  4, name: "MUPPETS",                             group: "A" },
+  { id: 13, name: "Iron Pair",                           group: "A" },
+  { id: 14, name: "Ein Sack kommt selten allein",        group: "A" },
   { id:  5, name: "Pommes & Champagner",                 group: "B" },
   { id:  6, name: "Die Bio-Mechanischen-Weltraumstiere", group: "B" },
   { id:  7, name: "Unicorns",                            group: "B" },
   { id:  8, name: "Two Girls one Sack",                  group: "B" },
+  { id: 15, name: "Team Schäl Sick",                     group: "B" },
   { id:  9, name: "Team Hecken Frisch-Vermählt",         group: "C" },
   { id: 10, name: "Die brunftigen Beutel Boys",          group: "C" },
   { id: 11, name: "Mais-ter Mädels",                     group: "C" },
   { id: 12, name: "Die Beutelbrüder",                    group: "C" },
+  { id: 16, name: "Corn to be wild",                     group: "C" },
 ];
 
 
