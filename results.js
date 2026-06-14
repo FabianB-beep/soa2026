@@ -18,6 +18,7 @@ const CORNHOLE_TEAMS_CONFIG = [
   { id:  4, name: "MUPPETS",                             group: "A" },
   { id: 13, name: "Iron Pair",                           group: "A" },
   { id: 14, name: "Ein Sack kommt selten allein",        group: "A" },
+  { id: 17, name: "Die Sackgesichter",                   group: "A" },
   { id:  5, name: "Pommes & Champagner",                 group: "B" },
   { id:  6, name: "Die Bio-Mechanischen-Weltraumstiere", group: "B" },
   { id:  7, name: "Unicorns",                            group: "B" },
