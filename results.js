@@ -14,7 +14,6 @@
 
 const CORNHOLE_TEAMS_CONFIG = [
   { id:  1, name: "Awmb,akwmv",                         group: "A" },
-  { id:  2, name: "...die Bio-Mechanischen",             group: "A" },
   { id:  3, name: "PWG Turbo",                           group: "A" },
   { id:  4, name: "MUPPETS",                             group: "A" },
   { id:  5, name: "Pommes & Champagner",                 group: "B" },
@@ -72,13 +71,10 @@ const CORNHOLE_MATCHES_CONFIG = [
 // 4er Round-Robin: 1v2, 3v4, 1v3, 2v4, 1v4, 2v3
 
 const CORNHOLE_PAIRINGS = {
-  // Gruppenphase A (Teams 1–4)
-  1: [1, 2],
+  // Gruppenphase A (Teams 1, 3, 4)
   2: [3, 4],
   3: [1, 3],
-  4: [2, 4],
   5: [1, 4],
-  6: [2, 3],
   // Gruppenphase B (Teams 5–8)
   7: [5, 6],
   8: [7, 8],
@@ -94,7 +90,6 @@ const CORNHOLE_PAIRINGS = {
   17: [9, 12],
   18: [10, 11],
   // Halbfinale
-  19: [2, 8],
   21: [8, 10],
   // Platz 3 & Finale
 };
