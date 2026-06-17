@@ -34,39 +34,55 @@ const CORNHOLE_TEAMS_CONFIG = [
 
 // ── MATCHES ───────────────────────────────────────────────────────────────────
 // Spielplan: Runden, Felder und Uhrzeiten.
-// team1/team2 und score1/score2 werden automatisch aus PAARUNGEN und ERGEBNISSE befüllt.
-// 4 Teams pro Gruppe → 6 Round-Robin-Spiele pro Gruppe · alle Gruppen enden 17:40
-// Halbfinale 18:00 · Platz 3 & Finale 18:30
+// 6 Teams Gruppe A → 15 Spiele · 5 Teams Gruppe B/C → je 10 Spiele
+// 10-Minuten-Intervalle · Halbfinale 18:30 · Platz 3 & Finale 19:00
 
 const CORNHOLE_MATCHES_CONFIG = [
-  // ── Gruppenphase A – Feld 1 ───────────────────────────────────────────────
+  // ── Gruppenphase A – Feld 1 (15 Spiele) ───────────────────────────────────
   { id:  1, round: "Gruppenphase", group: "A", field: 1, time: "16:00" },
-  { id:  2, round: "Gruppenphase", group: "A", field: 1, time: "16:20" },
-  { id:  3, round: "Gruppenphase", group: "A", field: 1, time: "16:40" },
-  { id:  4, round: "Gruppenphase", group: "A", field: 1, time: "17:00" },
-  { id:  5, round: "Gruppenphase", group: "A", field: 1, time: "17:20" },
-  { id:  6, round: "Gruppenphase", group: "A", field: 1, time: "17:40" },
-  // ── Gruppenphase B – Feld 2 ───────────────────────────────────────────────
-  { id:  7, round: "Gruppenphase", group: "B", field: 2, time: "16:00" },
-  { id:  8, round: "Gruppenphase", group: "B", field: 2, time: "16:20" },
-  { id:  9, round: "Gruppenphase", group: "B", field: 2, time: "16:40" },
-  { id: 10, round: "Gruppenphase", group: "B", field: 2, time: "17:00" },
-  { id: 11, round: "Gruppenphase", group: "B", field: 2, time: "17:20" },
-  { id: 12, round: "Gruppenphase", group: "B", field: 2, time: "17:40" },
-  // ── Gruppenphase C – Feld 3 ───────────────────────────────────────────────
-  { id: 13, round: "Gruppenphase", group: "C", field: 3, time: "16:00" },
-  { id: 14, round: "Gruppenphase", group: "C", field: 3, time: "16:20" },
-  { id: 15, round: "Gruppenphase", group: "C", field: 3, time: "16:40" },
-  { id: 16, round: "Gruppenphase", group: "C", field: 3, time: "17:00" },
-  { id: 17, round: "Gruppenphase", group: "C", field: 3, time: "17:20" },
-  { id: 18, round: "Gruppenphase", group: "C", field: 3, time: "17:40" },
-  // ── Halbfinale (18:00) ────────────────────────────────────────────────────
-  { id: 19, round: "Halbfinale", group: null, field: 1, time: "18:00", label1: "1. Gruppe A", label2: "2. Gruppe B"     },
-  { id: 20, round: "Halbfinale", group: null, field: 2, time: "18:00", label1: "1. Gruppe B", label2: "Bester 2. Platz" },
-  { id: 21, round: "Halbfinale", group: null, field: 3, time: "18:00", label1: "1. Gruppe C", label2: "2. Gruppe A"     },
-  // ── Platz 3 & Finale (18:30) ──────────────────────────────────────────────
-  { id: 22, round: "Platz 3", group: null, field: 1, time: "18:30", label1: "Verlierer HF 1", label2: "Verlierer HF 2" },
-  { id: 23, round: "Finale",  group: null, field: 2, time: "18:30", label1: "Sieger HF 1",    label2: "Sieger HF 2"    },
+  { id:  2, round: "Gruppenphase", group: "A", field: 1, time: "16:10" },
+  { id:  3, round: "Gruppenphase", group: "A", field: 1, time: "16:20" },
+  { id:  4, round: "Gruppenphase", group: "A", field: 1, time: "16:30" },
+  { id:  5, round: "Gruppenphase", group: "A", field: 1, time: "16:40" },
+  { id:  6, round: "Gruppenphase", group: "A", field: 1, time: "16:50" },
+  { id:  7, round: "Gruppenphase", group: "A", field: 1, time: "17:00" },
+  { id:  8, round: "Gruppenphase", group: "A", field: 1, time: "17:10" },
+  { id:  9, round: "Gruppenphase", group: "A", field: 1, time: "17:20" },
+  { id: 10, round: "Gruppenphase", group: "A", field: 1, time: "17:30" },
+  { id: 11, round: "Gruppenphase", group: "A", field: 1, time: "17:40" },
+  { id: 12, round: "Gruppenphase", group: "A", field: 1, time: "17:50" },
+  { id: 13, round: "Gruppenphase", group: "A", field: 1, time: "18:00" },
+  { id: 14, round: "Gruppenphase", group: "A", field: 1, time: "18:10" },
+  { id: 15, round: "Gruppenphase", group: "A", field: 1, time: "18:20" },
+  // ── Gruppenphase B – Feld 2 (10 Spiele) ───────────────────────────────────
+  { id: 16, round: "Gruppenphase", group: "B", field: 2, time: "16:00" },
+  { id: 17, round: "Gruppenphase", group: "B", field: 2, time: "16:10" },
+  { id: 18, round: "Gruppenphase", group: "B", field: 2, time: "16:20" },
+  { id: 19, round: "Gruppenphase", group: "B", field: 2, time: "16:30" },
+  { id: 20, round: "Gruppenphase", group: "B", field: 2, time: "16:40" },
+  { id: 21, round: "Gruppenphase", group: "B", field: 2, time: "16:50" },
+  { id: 22, round: "Gruppenphase", group: "B", field: 2, time: "17:00" },
+  { id: 23, round: "Gruppenphase", group: "B", field: 2, time: "17:10" },
+  { id: 24, round: "Gruppenphase", group: "B", field: 2, time: "17:20" },
+  { id: 25, round: "Gruppenphase", group: "B", field: 2, time: "17:30" },
+  // ── Gruppenphase C – Feld 3 (10 Spiele) ───────────────────────────────────
+  { id: 26, round: "Gruppenphase", group: "C", field: 3, time: "16:00" },
+  { id: 27, round: "Gruppenphase", group: "C", field: 3, time: "16:10" },
+  { id: 28, round: "Gruppenphase", group: "C", field: 3, time: "16:20" },
+  { id: 29, round: "Gruppenphase", group: "C", field: 3, time: "16:30" },
+  { id: 30, round: "Gruppenphase", group: "C", field: 3, time: "16:40" },
+  { id: 31, round: "Gruppenphase", group: "C", field: 3, time: "16:50" },
+  { id: 32, round: "Gruppenphase", group: "C", field: 3, time: "17:00" },
+  { id: 33, round: "Gruppenphase", group: "C", field: 3, time: "17:10" },
+  { id: 34, round: "Gruppenphase", group: "C", field: 3, time: "17:20" },
+  { id: 35, round: "Gruppenphase", group: "C", field: 3, time: "17:30" },
+  // ── Halbfinale (18:30) ────────────────────────────────────────────────────
+  { id: 36, round: "Halbfinale", group: null, field: 1, time: "18:30", label1: "1. Gruppe A", label2: "2. Gruppe B"     },
+  { id: 37, round: "Halbfinale", group: null, field: 2, time: "18:30", label1: "1. Gruppe B", label2: "Bester 2. Platz" },
+  { id: 38, round: "Halbfinale", group: null, field: 3, time: "18:30", label1: "1. Gruppe C", label2: "2. Gruppe A"     },
+  // ── Platz 3 & Finale (19:00) ──────────────────────────────────────────────
+  { id: 39, round: "Platz 3", group: null, field: 1, time: "19:00", label1: "Verlierer HF 1", label2: "Verlierer HF 2" },
+  { id: 40, round: "Finale",  group: null, field: 2, time: "19:00", label1: "Sieger HF 1",    label2: "Sieger HF 2"    },
 ];
 
 
@@ -76,26 +92,45 @@ const CORNHOLE_MATCHES_CONFIG = [
 // 4er Round-Robin: 1v2, 3v4, 1v3, 2v4, 1v4, 2v3
 
 const CORNHOLE_PAIRINGS = {
-  // Gruppenphase A (Teams 1, 3, 4)
-  2: [3, 4],
-  3: [1, 3],
-  5: [1, 4],
-  // Gruppenphase B (Teams 5–8)
-  7: [5, 6],
-  8: [7, 8],
-  9: [5, 7],
-  10: [6, 8],
-  11: [5, 8],
-  12: [6, 7],
-  // Gruppenphase C (Teams 9–12)
-  13: [9, 10],
-  14: [11, 12],
-  15: [9, 11],
-  16: [10, 12],
-  17: [9, 12],
-  18: [10, 11],
+  // Gruppenphase A (Teams 1, 3, 4, 13, 14, 17) – 15 Spiele Round-Robin
+  1:  [1, 3],
+  2:  [4, 13],
+  3:  [14, 17],
+  4:  [1, 4],
+  5:  [3, 14],
+  6:  [13, 17],
+  7:  [1, 13],
+  8:  [3, 17],
+  9:  [4, 14],
+  10: [1, 14],
+  11: [3, 13],
+  12: [4, 17],
+  13: [1, 17],
+  14: [3, 4],
+  15: [13, 14],
+  // Gruppenphase B (Teams 5, 6, 7, 8, 15) – 10 Spiele Round-Robin
+  16: [5, 6],
+  17: [7, 8],
+  18: [5, 15],
+  19: [6, 7],
+  20: [8, 15],
+  21: [5, 7],
+  22: [6, 8],
+  23: [5, 8],
+  24: [6, 15],
+  25: [7, 15],
+  // Gruppenphase C (Teams 9, 10, 11, 12, 16) – 10 Spiele Round-Robin
+  26: [9, 10],
+  27: [11, 12],
+  28: [9, 16],
+  29: [10, 11],
+  30: [12, 16],
+  31: [9, 11],
+  32: [10, 12],
+  33: [9, 12],
+  34: [10, 16],
+  35: [11, 16],
   // Halbfinale
-  21: [8, 10],
   // Platz 3 & Finale
 };
 
