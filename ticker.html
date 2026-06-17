@@ -124,6 +124,11 @@
     .slide__content {
       flex: 1;
       overflow: hidden;
+      position: relative;
+    }
+
+    .slide__content-inner {
+      transition: transform 0.5s ease;
     }
 
     /* Match cards */
@@ -401,7 +406,7 @@
     slides.forEach(function(s, i) {
       var div = document.createElement('div');
       div.className = 'slide' + (i === 0 ? ' slide--active' : '');
-      div.innerHTML = '<div class="slide__title">' + s.title + '</div><div class="slide__content">' + s.html + '</div>';
+      div.innerHTML = '<div class="slide__title">' + s.title + '</div><div class="slide__content"><div class="slide__content-inner">' + s.html + '</div></div>';
       slidesEl.appendChild(div);
 
       var dot = document.createElement('button');
@@ -415,12 +420,53 @@
     showSlide(slideIndex);
   }
 
+  var scrollRAF = null;
+  var currentSlideDuration = SLIDE_DURATION;
+
+  function getOverflow(idx) {
+    var slide = document.querySelectorAll('.slide')[idx];
+    if (!slide) return 0;
+    var container = slide.querySelector('.slide__content');
+    var inner = slide.querySelector('.slide__content-inner');
+    if (!container || !inner) return 0;
+    return Math.max(0, inner.offsetHeight - container.offsetHeight);
+  }
+
   function showSlide(idx) {
     var allSlides = document.querySelectorAll('.slide');
     var allDots = document.querySelectorAll('.ticker__dot');
-    allSlides.forEach(function(s, i) { s.classList.toggle('slide--active', i === idx); });
+    allSlides.forEach(function(s, i) {
+      s.classList.toggle('slide--active', i === idx);
+      var inner = s.querySelector('.slide__content-inner');
+      if (inner) inner.style.transform = 'translateY(0)';
+    });
     allDots.forEach(function(d, i) { d.classList.toggle('ticker__dot--active', i === idx); });
     slideIndex = idx;
+
+    if (scrollRAF) { cancelAnimationFrame(scrollRAF); scrollRAF = null; }
+
+    var overflow = getOverflow(idx);
+    if (overflow > 0) {
+      currentSlideDuration = SLIDE_DURATION + Math.max(4000, overflow * 20);
+      var slide = allSlides[idx];
+      var inner = slide.querySelector('.slide__content-inner');
+      var scrollDelay = 1500;
+      var scrollDuration = currentSlideDuration - 3000;
+      var scrollStart = Date.now();
+
+      (function scrollTick() {
+        var elapsed = Date.now() - scrollStart;
+        if (elapsed < scrollDelay) { scrollRAF = requestAnimationFrame(scrollTick); return; }
+        var scrollElapsed = elapsed - scrollDelay;
+        var pct = Math.min(1, scrollElapsed / scrollDuration);
+        var ease = pct < 0.5 ? 2 * pct * pct : 1 - Math.pow(-2 * pct + 2, 2) / 2;
+        inner.style.transform = 'translateY(-' + (ease * overflow) + 'px)';
+        if (pct < 1) scrollRAF = requestAnimationFrame(scrollTick);
+      })();
+    } else {
+      currentSlideDuration = SLIDE_DURATION;
+    }
+
     startProgress();
   }
 
@@ -439,7 +485,7 @@
     function tick() {
       if (paused) { progressRAF = requestAnimationFrame(tick); return; }
       var elapsed = Date.now() - progressStart;
-      var pct = Math.min(100, (elapsed / SLIDE_DURATION) * 100);
+      var pct = Math.min(100, (elapsed / currentSlideDuration) * 100);
       document.getElementById('progressBar').style.width = pct + '%';
       if (pct < 100) progressRAF = requestAnimationFrame(tick);
     }
@@ -448,7 +494,12 @@
 
   function resetTimer() {
     clearInterval(slideTimer);
-    slideTimer = setInterval(function() { if (!paused) nextSlide(); }, SLIDE_DURATION);
+    slideTimer = setInterval(function() {
+      if (!paused) {
+        var elapsed = Date.now() - progressStart;
+        if (elapsed >= currentSlideDuration) nextSlide();
+      }
+    }, 500);
   }
 
   function refresh() {
