@@ -388,6 +388,47 @@
       }
     });
 
+    // Gruppen-Übersicht (alle Teams nach Gruppe)
+    var groupsHtml = "";
+    ["A", "B", "C"].forEach(function(g) {
+      var teams = CORNHOLE_TEAMS.filter(function(t) { return t.group === g; });
+      if (!teams.length) return;
+      groupsHtml += '<div style="margin-bottom:20px"><div style="font-size:0.85rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent-2);margin-bottom:10px;font-weight:700">Gruppe ' + g + '</div>';
+      teams.forEach(function(t) {
+        groupsHtml += '<div style="padding:8px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;font-size:0.95rem">' + t.name + '</div>';
+      });
+      groupsHtml += '</div>';
+    });
+    slides.push({ title: "Gruppenübersicht", html: groupsHtml });
+
+    // Gesamttabelle (alle Teams gruppenübergreifend)
+    var anyResults = CORNHOLE_MATCHES.some(function(m) { return m.score1 !== null; });
+    if (anyResults) {
+      var allStats = {};
+      CORNHOLE_TEAMS.forEach(function(t) { allStats[t.id] = { id: t.id, name: t.name, group: t.group, w: 0, l: 0, pf: 0, pa: 0 }; });
+      CORNHOLE_MATCHES.forEach(function(m) {
+        if (m.score1 === null) return;
+        var s1 = allStats[m.team1], s2 = allStats[m.team2];
+        if (!s1 || !s2) return;
+        s1.pf += m.score1; s1.pa += m.score2;
+        s2.pf += m.score2; s2.pa += m.score1;
+        if (m.score1 > m.score2) { s1.w++; s2.l++; }
+        else if (m.score2 > m.score1) { s2.w++; s1.l++; }
+      });
+      var allArr = Object.values(allStats);
+      allArr.sort(function(a, b) { return (b.w - b.l) - (a.w - a.l) || (b.pf - b.pa) - (a.pf - a.pa); });
+      var totalHtml = '<table class="standings">' +
+        '<tr><th>#</th><th>Team</th><th>Gr.</th><th>S</th><th>N</th><th>+</th><th>–</th><th>Diff</th></tr>';
+      allArr.forEach(function(r, i) {
+        totalHtml += '<tr><td>' + (i + 1) + '</td><td>' + r.name + '</td><td>' + r.group + '</td>' +
+          '<td>' + r.w + '</td><td>' + r.l + '</td>' +
+          '<td>' + r.pf + '</td><td>' + r.pa + '</td>' +
+          '<td>' + (r.pf - r.pa > 0 ? "+" : "") + (r.pf - r.pa) + '</td></tr>';
+      });
+      totalHtml += '</table>';
+      slides.push({ title: "Gesamttabelle", html: totalHtml });
+    }
+
     var koRounds = ["Halbfinale", "Platz 3", "Finale"];
     var koMatches = CORNHOLE_MATCHES.filter(function(m) { return m.group === null; });
     if (koMatches.length) {
