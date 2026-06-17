@@ -134,24 +134,30 @@
     /* Match cards */
     .match {
       display: grid;
-      grid-template-columns: 1fr auto 1fr;
+      grid-template-columns: 44px 1fr auto 1fr;
       align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
+      gap: 8px;
+      padding: 6px 12px;
       background: var(--bg-2);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      margin-bottom: 8px;
+      border-radius: 8px;
+      margin-bottom: 4px;
     }
 
     .match--highlight {
       border-color: var(--accent);
-      box-shadow: 0 0 20px rgba(204,17,0,0.15);
+      box-shadow: 0 0 12px rgba(204,17,0,0.15);
+    }
+
+    .match__time {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-variant-numeric: tabular-nums;
     }
 
     .match__team {
       font-weight: 600;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -162,19 +168,14 @@
 
     .match__score {
       font-family: "Space Grotesk", system-ui, sans-serif;
-      font-size: 1.3rem;
+      font-size: 1rem;
       font-weight: 700;
-      min-width: 70px;
+      min-width: 50px;
       text-align: center;
       color: var(--text-muted);
     }
 
-    .match__score--set { color: var(--accent-2); }
-
-    .match__time {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      text-align: center;
+    .match__score--set { color: var(--accent-2);
     }
 
     /* Standings table */
@@ -346,9 +347,9 @@
     var scoreText = hasScore ? m.score1 + " : " + m.score2 : "– : –";
     var highlight = hasScore ? " match--highlight" : "";
     return '<div class="match' + highlight + '">' +
+      '<div class="match__time">' + m.time + '</div>' +
       '<div class="match__team' + (tbd1 ? " match__team--tbd" : "") + '">' + t1 + '</div>' +
-      '<div><div class="' + scoreClass + '">' + scoreText + '</div>' +
-      '<div class="match__time">' + m.time + ' Uhr</div></div>' +
+      '<div class="' + scoreClass + '">' + scoreText + '</div>' +
       '<div class="match__team match__team--right' + (tbd2 ? " match__team--tbd" : "") + '">' + t2 + '</div>' +
       '</div>';
   }
