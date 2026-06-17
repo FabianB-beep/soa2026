@@ -375,6 +375,7 @@
     var navEl = document.getElementById('nav');
     var slides = [];
 
+    // Gruppenspielplan je Gruppe
     ["A", "B", "C"].forEach(function(g) {
       var matches = CORNHOLE_MATCHES.filter(function(m) { return m.group === g; });
       if (!matches.length) return;
@@ -382,14 +383,20 @@
         title: "Gruppe " + g + " · Spielplan",
         html: matches.map(renderMatchCard).join("")
       });
-      var hasResults = matches.some(function(m) { return m.score1 !== null; });
-      if (hasResults) {
-        slides.push({
-          title: "Gruppe " + g + " · Tabelle",
-          html: renderStandingsTable(g)
-        });
-      }
     });
+
+    // Gruppentabellen auf einem Slide
+    var anyGroupResults = CORNHOLE_MATCHES.some(function(m) { return m.group && m.score1 !== null; });
+    if (anyGroupResults) {
+      var groupTablesHtml = "";
+      ["A", "B", "C"].forEach(function(g) {
+        var hasResults = CORNHOLE_MATCHES.some(function(m) { return m.group === g && m.score1 !== null; });
+        if (!hasResults) return;
+        groupTablesHtml += '<div style="margin-bottom:16px"><div style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent-2);margin-bottom:6px;font-weight:700">Gruppe ' + g + '</div>';
+        groupTablesHtml += renderStandingsTable(g) + '</div>';
+      });
+      slides.push({ title: "Gruppentabellen", html: groupTablesHtml });
+    }
 
     // Gesamttabelle (alle Teams gruppenübergreifend, immer sichtbar)
     var allStats = {};
