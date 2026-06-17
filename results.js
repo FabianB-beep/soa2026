@@ -92,23 +92,23 @@ const CORNHOLE_MATCHES_CONFIG = [
 // 4er Round-Robin: 1v2, 3v4, 1v3, 2v4, 1v4, 2v3
 
 const CORNHOLE_PAIRINGS = {
-  // Gruppenphase A (Teams 1, 3, 4, 13, 14, 17) – 15 Spiele Round-Robin
-  1:  [1, 3],
-  2:  [4, 13],
-  3:  [14, 17],
-  4:  [1, 4],
-  5:  [3, 14],
-  6:  [13, 17],
-  7:  [1, 13],
-  8:  [3, 17],
-  9:  [4, 14],
+  // Gruppenphase A (Teams 1–4)
+  1: [1, 3],
+  2: [4, 13],
+  3: [14, 17],
+  4: [1, 4],
+  5: [3, 14],
+  6: [13, 17],
+  7: [1, 13],
+  8: [3, 17],
+  9: [4, 14],
   10: [1, 14],
   11: [3, 13],
   12: [4, 17],
   13: [1, 17],
   14: [3, 4],
   15: [13, 14],
-  // Gruppenphase B (Teams 5, 6, 7, 8, 15) – 10 Spiele Round-Robin
+  // Gruppenphase B (Teams 5–8)
   16: [5, 6],
   17: [7, 8],
   18: [5, 15],
@@ -119,7 +119,7 @@ const CORNHOLE_PAIRINGS = {
   23: [5, 8],
   24: [6, 15],
   25: [7, 15],
-  // Gruppenphase C (Teams 9, 10, 11, 12, 16) – 10 Spiele Round-Robin
+  // Gruppenphase C (Teams 9–12)
   26: [9, 10],
   27: [11, 12],
   28: [9, 16],
@@ -141,8 +141,20 @@ const CORNHOLE_PAIRINGS = {
 
 const CORNHOLE_RESULTS = {
   // Gruppenphase A
+  1: [2, 21],
+  2: [5, 10],
+  3: [8, 4],
+  4: [1, 2],
+  5: [14, 2],
+  6: [3, 8],
   // Gruppenphase B
+  16: [21, 0],
+  17: [10, 11],
+  18: [1, 5],
   // Gruppenphase C
+  26: [5, 6],
+  27: [15, 9],
+  28: [14, 16],
   // Halbfinale
   // Platz 3 & Finale
 };
