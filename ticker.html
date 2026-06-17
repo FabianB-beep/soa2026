@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Ticker – S:O:A 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <meta name="theme-color" content="#0a0003" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #0a0003;
+      --bg-2:       #0f0005;
+      --bg-3:       #160008;
+      --border:     rgba(255,60,20,0.12);
+      --text:       #f0e8e8;
+      --text-muted: #9a7070;
+      --accent:     #cc1100;
+      --accent-2:   #ff4422;
+      --gradient:   linear-gradient(135deg, #8b0000, #cc2200, #ff4422);
+    }
+
+    html, body { height: 100%; overflow: hidden; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Inter", system-ui, sans-serif;
+      font-size: 18px;
+      line-height: 1.5;
+    }
+
+    .ticker {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ticker__header {
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .ticker__logo {
+      font-family: "Space Grotesk", system-ui, sans-serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+
+    .ticker__logo span { color: var(--accent); }
+
+    .ticker__subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .ticker__live {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-2);
+    }
+
+    .ticker__live-dot {
+      width: 8px; height: 8px;
+      background: var(--accent-2);
+      border-radius: 50%;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .ticker__slides {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      pointer-events: none;
+    }
+
+    .slide--active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .slide__title {
+      font-family: "Space Grotesk", system-ui, sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--accent-2);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .slide__content {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* Match cards */
+    .match {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 8px;
+    }
+
+    .match--highlight {
+      border-color: var(--accent);
+      box-shadow: 0 0 20px rgba(204,17,0,0.15);
+    }
+
+    .match__team {
+      font-weight: 600;
+      font-size: 0.95rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .match__team--right { text-align: right; }
+    .match__team--tbd { color: var(--text-muted); font-style: italic; }
+
+    .match__score {
+      font-family: "Space Grotesk", system-ui, sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      min-width: 70px;
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    .match__score--set { color: var(--accent-2); }
+
+    .match__time {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* Standings table */
+    .standings { width: 100%; border-collapse: collapse; }
+
+    .standings th {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      padding: 8px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .standings th:nth-child(n+3) { text-align: center; }
+
+    .standings td {
+      padding: 10px 12px;
+      font-size: 0.9rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .standings td:first-child {
+      font-weight: 700;
+      color: var(--accent-2);
+      width: 32px;
+      text-align: center;
+    }
+
+    .standings td:nth-child(n+3) { text-align: center; font-variant-numeric: tabular-nums; }
+
+    .standings tr:nth-child(-n+2) td:first-child { color: #ffcc00; }
+
+    /* Progress dots */
+    .ticker__nav {
+      padding: 16px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .ticker__dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--text-muted);
+      opacity: 0.3;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .ticker__dot--active {
+      opacity: 1;
+      background: var(--accent-2);
+      width: 24px;
+      border-radius: 4px;
+    }
+
+    /* Progress bar */
+    .ticker__progress {
+      height: 3px;
+      background: var(--bg-3);
+      flex-shrink: 0;
+    }
+
+    .ticker__progress-bar {
+      height: 100%;
+      background: var(--gradient);
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ticker">
+    <div class="ticker__header">
+      <div>
+        <div class="ticker__logo">S<span>:</span>O<span>:</span>A <span>2026</span></div>
+        <div class="ticker__subtitle">Cornhole Turnier</div>
+      </div>
+      <div class="ticker__live">
+        <div class="ticker__live-dot"></div>
+        Live Ticker
+      </div>
+    </div>
+
+    <div class="ticker__progress">
+      <div class="ticker__progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="ticker__slides" id="slides"></div>
+
+    <div class="ticker__nav" id="nav"></div>
+  </div>
+
+  <script src="data.js?v=0766bf3"></script>
+  <script>
+  var REFRESH_INTERVAL = 30000;
+  var SLIDE_DURATION   = 8000;
+
+  var slideIndex = 0;
+  var slideCount = 0;
+  var slideTimer = null;
+  var progressStart = 0;
+  var progressRAF = null;
+  var paused = false;
+
+  function loadResults(cb) {
+    var s = document.createElement('script');
+    s.src = 'results.js?nc=' + Date.now();
+    s.onload = cb;
+    s.onerror = cb;
+    document.head.appendChild(s);
+  }
+
+  function mergeData() {
+    CORNHOLE_TEAMS.length = 0;
+    CORNHOLE_MATCHES.length = 0;
+    if (typeof CORNHOLE_TEAMS_CONFIG !== "undefined")
+      CORNHOLE_TEAMS_CONFIG.forEach(function(t) { CORNHOLE_TEAMS.push({ id: t.id, name: t.name, group: t.group, players: [] }); });
+    if (typeof CORNHOLE_MATCHES_CONFIG !== "undefined")
+      CORNHOLE_MATCHES_CONFIG.forEach(function(m) {
+        CORNHOLE_MATCHES.push({ id: m.id, round: m.round, group: m.group, field: m.field, time: m.time,
+          label1: m.label1, label2: m.label2, team1: null, team2: null, score1: null, score2: null });
+      });
+    if (typeof CORNHOLE_PAIRINGS !== "undefined")
+      CORNHOLE_MATCHES.forEach(function(m) {
+        if (CORNHOLE_PAIRINGS[m.id]) { m.team1 = CORNHOLE_PAIRINGS[m.id][0]; m.team2 = CORNHOLE_PAIRINGS[m.id][1]; }
+      });
+    if (typeof CORNHOLE_RESULTS !== "undefined")
+      CORNHOLE_MATCHES.forEach(function(m) {
+        var r = CORNHOLE_RESULTS[m.id];
+        if (r && typeof r[0] === "number" && typeof r[1] === "number") { m.score1 = r[0]; m.score2 = r[1]; }
+      });
+  }
+
+  function teamName(id) {
+    var t = CORNHOLE_TEAMS.find(function(t) { return t.id === id; });
+    return t ? t.name : "TBD";
+  }
+
+  function calcStandings(group) {
+    var teams = CORNHOLE_TEAMS.filter(function(t) { return t.group === group; });
+    var stats = {};
+    teams.forEach(function(t) { stats[t.id] = { id: t.id, name: t.name, w: 0, l: 0, pf: 0, pa: 0 }; });
+    CORNHOLE_MATCHES.forEach(function(m) {
+      if (m.group !== group || m.score1 === null) return;
+      var s1 = stats[m.team1], s2 = stats[m.team2];
+      if (!s1 || !s2) return;
+      s1.pf += m.score1; s1.pa += m.score2;
+      s2.pf += m.score2; s2.pa += m.score1;
+      if (m.score1 > m.score2) { s1.w++; s2.l++; }
+      else if (m.score2 > m.score1) { s2.w++; s1.l++; }
+    });
+    var arr = Object.values(stats);
+    arr.sort(function(a, b) { return (b.w - b.l) - (a.w - a.l) || (b.pf - b.pa) - (a.pf - a.pa); });
+    return arr;
+  }
+
+  function renderMatchCard(m) {
+    var t1 = m.team1 ? teamName(m.team1) : (m.label1 || "TBD");
+    var t2 = m.team2 ? teamName(m.team2) : (m.label2 || "TBD");
+    var tbd1 = !m.team1, tbd2 = !m.team2;
+    var hasScore = m.score1 !== null && m.score2 !== null;
+    var scoreClass = hasScore ? "match__score match__score--set" : "match__score";
+    var scoreText = hasScore ? m.score1 + " : " + m.score2 : "– : –";
+    var highlight = hasScore ? " match--highlight" : "";
+    return '<div class="match' + highlight + '">' +
+      '<div class="match__team' + (tbd1 ? " match__team--tbd" : "") + '">' + t1 + '</div>' +
+      '<div><div class="' + scoreClass + '">' + scoreText + '</div>' +
+      '<div class="match__time">' + m.time + ' Uhr</div></div>' +
+      '<div class="match__team match__team--right' + (tbd2 ? " match__team--tbd" : "") + '">' + t2 + '</div>' +
+      '</div>';
+  }
+
+  function renderStandingsTable(group) {
+    var rows = calcStandings(group);
+    var html = '<table class="standings">' +
+      '<tr><th>#</th><th>Team</th><th>S</th><th>N</th><th>+</th><th>–</th><th>Diff</th></tr>';
+    rows.forEach(function(r, i) {
+      html += '<tr><td>' + (i + 1) + '</td><td>' + r.name + '</td>' +
+        '<td>' + r.w + '</td><td>' + r.l + '</td>' +
+        '<td>' + r.pf + '</td><td>' + r.pa + '</td>' +
+        '<td>' + (r.pf - r.pa > 0 ? "+" : "") + (r.pf - r.pa) + '</td></tr>';
+    });
+    html += '</table>';
+    return html;
+  }
+
+  function buildSlides() {
+    var slidesEl = document.getElementById('slides');
+    var navEl = document.getElementById('nav');
+    var slides = [];
+
+    ["A", "B", "C"].forEach(function(g) {
+      var matches = CORNHOLE_MATCHES.filter(function(m) { return m.group === g; });
+      if (!matches.length) return;
+      slides.push({
+        title: "Gruppe " + g + " · Spielplan",
+        html: matches.map(renderMatchCard).join("")
+      });
+      var hasResults = matches.some(function(m) { return m.score1 !== null; });
+      if (hasResults) {
+        slides.push({
+          title: "Gruppe " + g + " · Tabelle",
+          html: renderStandingsTable(g)
+        });
+      }
+    });
+
+    var koRounds = ["Halbfinale", "Platz 3", "Finale"];
+    var koMatches = CORNHOLE_MATCHES.filter(function(m) { return m.group === null; });
+    if (koMatches.length) {
+      var html = "";
+      koRounds.forEach(function(round) {
+        var rm = koMatches.filter(function(m) { return m.round === round; });
+        if (!rm.length) return;
+        html += '<div style="margin-bottom:16px"><div style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:8px">' + round + '</div>';
+        html += rm.map(renderMatchCard).join("") + '</div>';
+      });
+      slides.push({ title: "KO-Phase", html: html });
+    }
+
+    slidesEl.innerHTML = "";
+    navEl.innerHTML = "";
+    slides.forEach(function(s, i) {
+      var div = document.createElement('div');
+      div.className = 'slide' + (i === 0 ? ' slide--active' : '');
+      div.innerHTML = '<div class="slide__title">' + s.title + '</div><div class="slide__content">' + s.html + '</div>';
+      slidesEl.appendChild(div);
+
+      var dot = document.createElement('button');
+      dot.className = 'ticker__dot' + (i === 0 ? ' ticker__dot--active' : '');
+      dot.addEventListener('click', function() { goToSlide(i); });
+      navEl.appendChild(dot);
+    });
+
+    slideCount = slides.length;
+    if (slideIndex >= slideCount) slideIndex = 0;
+    showSlide(slideIndex);
+  }
+
+  function showSlide(idx) {
+    var allSlides = document.querySelectorAll('.slide');
+    var allDots = document.querySelectorAll('.ticker__dot');
+    allSlides.forEach(function(s, i) { s.classList.toggle('slide--active', i === idx); });
+    allDots.forEach(function(d, i) { d.classList.toggle('ticker__dot--active', i === idx); });
+    slideIndex = idx;
+    startProgress();
+  }
+
+  function goToSlide(idx) {
+    showSlide(idx);
+    resetTimer();
+  }
+
+  function nextSlide() {
+    showSlide((slideIndex + 1) % slideCount);
+  }
+
+  function startProgress() {
+    progressStart = Date.now();
+    if (progressRAF) cancelAnimationFrame(progressRAF);
+    function tick() {
+      if (paused) { progressRAF = requestAnimationFrame(tick); return; }
+      var elapsed = Date.now() - progressStart;
+      var pct = Math.min(100, (elapsed / SLIDE_DURATION) * 100);
+      document.getElementById('progressBar').style.width = pct + '%';
+      if (pct < 100) progressRAF = requestAnimationFrame(tick);
+    }
+    tick();
+  }
+
+  function resetTimer() {
+    clearInterval(slideTimer);
+    slideTimer = setInterval(function() { if (!paused) nextSlide(); }, SLIDE_DURATION);
+  }
+
+  function refresh() {
+    loadResults(function() {
+      mergeData();
+      var currentIdx = slideIndex;
+      buildSlides();
+      if (currentIdx < slideCount) showSlide(currentIdx);
+    });
+  }
+
+  document.addEventListener('click', function() {
+    paused = !paused;
+    if (!paused) { progressStart = Date.now(); resetTimer(); }
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight') goToSlide((slideIndex + 1) % slideCount);
+    if (e.key === 'ArrowLeft') goToSlide((slideIndex - 1 + slideCount) % slideCount);
+    if (e.key === ' ') { e.preventDefault(); paused = !paused; if (!paused) { progressStart = Date.now(); resetTimer(); } }
+  });
+
+  loadResults(function() {
+    mergeData();
+    buildSlides();
+    resetTimer();
+    setInterval(refresh, REFRESH_INTERVAL);
+  });
+  </script>
+
+</body>
+</html>
