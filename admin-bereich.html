@@ -146,7 +146,7 @@
   </section>
 
   <script src="data.js?v=0766bf3"></script>
-  <script>!function(){var s=document.createElement('script');s.src='results.js?nc='+Date.now();s.onload=function(){init();};document.head.appendChild(s);}()</script>
+  <script>!function(){var s=document.createElement('script');s.src='results.js?nc='+Date.now();s.onload=function(){var s2=document.createElement('script');s2.src='scores.js?nc='+Date.now();s2.onload=function(){init();};document.head.appendChild(s2);};document.head.appendChild(s);}()</script>
   <script>
   function init() {
     // Nav
@@ -331,32 +331,30 @@
       return lines.join("\n");
     }
 
-    function buildPairingsBlock(koPairings) {
-      // Gruppenphase-Paarungen aus CORNHOLE_PAIRINGS übernehmen, KO-Paarungen ergänzen/überschreiben
-      const merged = { ...CORNHOLE_PAIRINGS, ...koPairings };
-      const groupMatches = CORNHOLE_MATCHES.filter(m => m.group !== null);
-      const koMatches    = CORNHOLE_MATCHES.filter(m => m.group === null);
+    function buildScoresFile(scores, koPairings) {
       const lines = [
-        "const CORNHOLE_PAIRINGS = {",
-        "  // Gruppenphase A (Teams 1–4)",
-        ...groupMatches.filter(m => m.group === "A").map(m => merged[m.id] ? `  ${m.id}: [${merged[m.id][0]}, ${merged[m.id][1]}],` : "").filter(Boolean),
-        "  // Gruppenphase B (Teams 5–8)",
-        ...groupMatches.filter(m => m.group === "B").map(m => merged[m.id] ? `  ${m.id}: [${merged[m.id][0]}, ${merged[m.id][1]}],` : "").filter(Boolean),
-        "  // Gruppenphase C (Teams 9–12)",
-        ...groupMatches.filter(m => m.group === "C").map(m => merged[m.id] ? `  ${m.id}: [${merged[m.id][0]}, ${merged[m.id][1]}],` : "").filter(Boolean),
+        "// ── ERGEBNISSE & KO-PAARUNGEN ────────────────────────────────────────────────",
+        "// Diese Datei wird vom Admin-Bereich und Power Automate aktualisiert.",
+        "// Format:  Match-ID : [Punkte Team 1, Punkte Team 2]",
+        "",
+      ];
+      lines.push(...buildResultsBlock(scores).split("\n"));
+      lines.push("");
+      lines.push(...buildKOPairingsBlock(koPairings).split("\n"));
+      return lines.join("\n") + "\n";
+    }
+
+    function buildKOPairingsBlock(koPairings) {
+      const koMatches = CORNHOLE_MATCHES.filter(m => m.group === null);
+      const lines = [
+        "const CORNHOLE_KO_PAIRINGS = {",
         "  // Halbfinale",
-        ...koMatches.filter(m => m.round === "Halbfinale").map(m => merged[m.id] ? `  ${m.id}: [${merged[m.id][0]}, ${merged[m.id][1]}],` : "").filter(Boolean),
+        ...koMatches.filter(m => m.round === "Halbfinale").map(m => koPairings[m.id] ? `  ${m.id}: [${koPairings[m.id][0]}, ${koPairings[m.id][1]}],` : "").filter(Boolean),
         "  // Platz 3 & Finale",
-        ...koMatches.filter(m => m.round !== "Halbfinale").map(m => merged[m.id] ? `  ${m.id}: [${merged[m.id][0]}, ${merged[m.id][1]}],` : "").filter(Boolean),
+        ...koMatches.filter(m => m.round !== "Halbfinale").map(m => koPairings[m.id] ? `  ${m.id}: [${koPairings[m.id][0]}, ${koPairings[m.id][1]}],` : "").filter(Boolean),
         "};",
       ];
       return lines.join("\n");
-    }
-
-    function replaceBlock(content, varName, newBlock) {
-      const start = content.indexOf(`const ${varName} = {`);
-      const end   = content.indexOf("};", start) + 2;
-      return content.slice(0, start) + newBlock + content.slice(end);
     }
 
     async function commitToGitHub(scores, koPairings) {
@@ -367,15 +365,13 @@
       if (!repo)  throw new Error("Kein Repository hinterlegt.");
       const headers = { Authorization: `Bearer ${token}`, "Content-Type": "application/json" };
       const getRes = await fetch(
-        `https://api.github.com/repos/${repo}/contents/results.js?ref=${branch}`, { headers }
+        `https://api.github.com/repos/${repo}/contents/scores.js?ref=${branch}`, { headers }
       );
-      if (!getRes.ok) throw new Error(`Datei nicht gefunden (${getRes.status}). Token/Repo/Branch prüfen.`);
+      if (!getRes.ok) throw new Error(`scores.js nicht gefunden (${getRes.status}). Token/Repo/Branch prüfen.`);
       const fileData = await getRes.json();
-      let content = decodeURIComponent(escape(atob(fileData.content.replace(/\n/g, ""))));
-      content = replaceBlock(content, "CORNHOLE_PAIRINGS", buildPairingsBlock(koPairings));
-      content = replaceBlock(content, "CORNHOLE_RESULTS",  buildResultsBlock(scores));
+      const content = buildScoresFile(scores, koPairings);
       const putRes = await fetch(
-        `https://api.github.com/repos/${repo}/contents/results.js`,
+        `https://api.github.com/repos/${repo}/contents/scores.js`,
         {
           method: "PUT",
           headers,

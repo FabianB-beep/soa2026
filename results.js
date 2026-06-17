@@ -1,12 +1,11 @@
 // ── CORNHOLE TURNIER CONFIG ───────────────────────────────────────────────────
-// Diese Datei ist die einzige die für das Turnier gepflegt werden muss.
-// data.js und app.js müssen nicht angefasst werden.
+// Statische Turnierdaten: Teams, Spielplan, Gruppenpaarungen.
+// Ergebnisse und KO-Paarungen stehen in scores.js (wird separat aktualisiert).
 //
 // Reihenfolge der Abschnitte:
 //   1. TEAMS          – Teamnamen und Gruppenzuordnung
 //   2. MATCHES        – Spielplan (Zeiten, Felder, Runden)
-//   3. PAARUNGEN      – Welche Teams spielen in welchem Match
-//   4. ERGEBNISSE     – Eingetragene Spielergebnisse
+//   3. PAARUNGEN      – Welche Teams spielen in welchem Match (Gruppenphase)
 
 
 // ── TEAMS ─────────────────────────────────────────────────────────────────────
@@ -130,43 +129,6 @@ const CORNHOLE_PAIRINGS = {
   33: [9, 12],
   34: [10, 16],
   35: [11, 16],
-  // Halbfinale
-  // Platz 3 & Finale
-};
-
-
-// ── ERGEBNISSE ────────────────────────────────────────────────────────────────
-// Format:  Match-ID : [Punkte Team 1, Punkte Team 2]
-// Nicht gespielte Spiele einfach weglassen oder auskommentieren.
-
-const CORNHOLE_RESULTS = {
-  // Gruppenphase A
-  1: [2, 21],
-  2: [5, 10],
-  3: [8, 4],
-  4: [1, 2],
-  5: [14, 2],
-  6: [3, 8],
-  13: [12, 10],
-  14: [0, 0],
-  15: [3, 5],
-  // Gruppenphase B
-  16: [21, 0],
-  17: [10, 11],
-  18: [1, 5],
-  23: [1, 2],
-  24: [3, 4],
-  25: [5, 6],
-  // Gruppenphase C
-  26: [5, 6],
-  27: [15, 9],
-  28: [14, 16],
-  30: [1, 1],
-  31: [1, 1],
-  32: [1, 1],
-  33: [7, 8],
-  34: [9, 10],
-  35: [11, 12],
   // Halbfinale
   // Platz 3 & Finale
 };

@@ -178,6 +178,14 @@ if (typeof CORNHOLE_PAIRINGS !== "undefined") {
     }
   });
 }
+if (typeof CORNHOLE_KO_PAIRINGS !== "undefined") {
+  CORNHOLE_MATCHES.forEach(m => {
+    if (CORNHOLE_KO_PAIRINGS[m.id]) {
+      m.team1 = CORNHOLE_KO_PAIRINGS[m.id][0];
+      m.team2 = CORNHOLE_KO_PAIRINGS[m.id][1];
+    }
+  });
+}
 if (typeof CORNHOLE_RESULTS !== "undefined") {
   CORNHOLE_MATCHES.forEach(m => {
     const r = CORNHOLE_RESULTS[m.id];

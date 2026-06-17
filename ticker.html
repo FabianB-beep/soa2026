@@ -287,7 +287,13 @@
   var paused = false;
 
   function loadResults(cb) {
-    fetch('results.js?nc=' + Date.now())
+    var ts = Date.now();
+    fetch('results.js?nc=' + ts)
+      .then(function(r) { return r.text(); })
+      .then(function(code) {
+        (0, eval)(code.replace(/\bconst\s+CORNHOLE_/g, 'var CORNHOLE_'));
+        return fetch('scores.js?nc=' + ts);
+      })
       .then(function(r) { return r.text(); })
       .then(function(code) {
         (0, eval)(code.replace(/\bconst\s+CORNHOLE_/g, 'var CORNHOLE_'));
@@ -309,6 +315,10 @@
     if (typeof CORNHOLE_PAIRINGS !== "undefined")
       CORNHOLE_MATCHES.forEach(function(m) {
         if (CORNHOLE_PAIRINGS[m.id]) { m.team1 = CORNHOLE_PAIRINGS[m.id][0]; m.team2 = CORNHOLE_PAIRINGS[m.id][1]; }
+      });
+    if (typeof CORNHOLE_KO_PAIRINGS !== "undefined")
+      CORNHOLE_MATCHES.forEach(function(m) {
+        if (CORNHOLE_KO_PAIRINGS[m.id]) { m.team1 = CORNHOLE_KO_PAIRINGS[m.id][0]; m.team2 = CORNHOLE_KO_PAIRINGS[m.id][1]; }
       });
     if (typeof CORNHOLE_RESULTS !== "undefined")
       CORNHOLE_MATCHES.forEach(function(m) {
