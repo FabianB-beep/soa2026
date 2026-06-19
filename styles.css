@@ -340,12 +340,6 @@ input, select { font: inherit; color: inherit; }
   font-size: 0.95rem;
   font-weight: 700;
 }
-.weather-day__rain {
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  margin-top: 2px;
-}
-
 .hero__actions {
   display: flex;
   justify-content: center;
