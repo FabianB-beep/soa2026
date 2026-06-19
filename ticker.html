@@ -402,18 +402,13 @@
       });
     });
 
-    // Gruppentabellen auf einem Slide
-    var anyGroupDone = CORNHOLE_MATCHES.some(function(m) { return m.group && m.done; });
-    if (anyGroupDone) {
-      var groupTablesHtml = "";
-      ["A", "B", "C"].forEach(function(g) {
-        var hasResults = CORNHOLE_MATCHES.some(function(m) { return m.group === g && m.done; });
-        if (!hasResults) return;
-        groupTablesHtml += '<div style="margin-bottom:16px"><div style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent-2);margin-bottom:6px;font-weight:700">Gruppe ' + g + '</div>';
-        groupTablesHtml += renderStandingsTable(g) + '</div>';
-      });
-      slides.push({ title: "Gruppentabellen", html: groupTablesHtml });
-    }
+    // Gruppentabellen auf einem Slide (immer sichtbar)
+    var groupTablesHtml = "";
+    ["A", "B", "C"].forEach(function(g) {
+      groupTablesHtml += '<div style="margin-bottom:16px"><div style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent-2);margin-bottom:6px;font-weight:700">Gruppe ' + g + '</div>';
+      groupTablesHtml += renderStandingsTable(g) + '</div>';
+    });
+    slides.push({ title: "Gruppentabellen", html: groupTablesHtml });
 
     // Gesamttabelle (alle Teams gruppenübergreifend, immer sichtbar)
     var allStats = {};
