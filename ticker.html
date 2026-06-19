@@ -148,6 +148,13 @@
       border-color: var(--accent);
       box-shadow: 0 0 12px rgba(204,17,0,0.15);
     }
+    .match--live {
+      border-color: #f59e0b;
+      box-shadow: 0 0 12px rgba(245,158,11,0.2);
+    }
+    .match__score--live {
+      color: #f59e0b;
+    }
 
     .match__time {
       font-size: 0.75rem;
@@ -310,7 +317,7 @@
     if (typeof CORNHOLE_MATCHES_CONFIG !== "undefined")
       CORNHOLE_MATCHES_CONFIG.forEach(function(m) {
         CORNHOLE_MATCHES.push({ id: m.id, round: m.round, group: m.group, field: m.field, time: m.time,
-          label1: m.label1, label2: m.label2, team1: null, team2: null, score1: null, score2: null });
+          label1: m.label1, label2: m.label2, team1: null, team2: null, score1: null, score2: null, done: false });
       });
     if (typeof CORNHOLE_PAIRINGS !== "undefined")
       CORNHOLE_MATCHES.forEach(function(m) {
@@ -323,7 +330,7 @@
     if (typeof CORNHOLE_RESULTS !== "undefined")
       CORNHOLE_MATCHES.forEach(function(m) {
         var r = CORNHOLE_RESULTS[m.id];
-        if (r && typeof r[0] === "number" && typeof r[1] === "number") { m.score1 = r[0]; m.score2 = r[1]; }
+        if (r && typeof r[0] === "number" && typeof r[1] === "number") { m.score1 = r[0]; m.score2 = r[1]; m.done = !!r[2]; }
       });
   }
 
@@ -337,7 +344,7 @@
     var stats = {};
     teams.forEach(function(t) { stats[t.id] = { id: t.id, name: t.name, w: 0, l: 0, pf: 0, pa: 0 }; });
     CORNHOLE_MATCHES.forEach(function(m) {
-      if (m.group !== group || m.score1 === null) return;
+      if (m.group !== group || !m.done) return;
       var s1 = stats[m.team1], s2 = stats[m.team2];
       if (!s1 || !s2) return;
       s1.pf += m.score1; s1.pa += m.score2;
@@ -355,9 +362,9 @@
     var t2 = m.team2 ? teamName(m.team2) : (m.label2 || "TBD");
     var tbd1 = !m.team1, tbd2 = !m.team2;
     var hasScore = m.score1 !== null && m.score2 !== null;
-    var scoreClass = hasScore ? "match__score match__score--set" : "match__score";
+    var scoreClass = hasScore ? (m.done ? "match__score match__score--set" : "match__score match__score--live") : "match__score";
     var scoreText = hasScore ? m.score1 + " : " + m.score2 : "– : –";
-    var highlight = hasScore ? " match--highlight" : "";
+    var highlight = m.done ? " match--highlight" : (hasScore ? " match--live" : "");
     return '<div class="match' + highlight + '">' +
       '<div class="match__time">' + m.time + '</div>' +
       '<div class="match__team' + (tbd1 ? " match__team--tbd" : "") + '">' + t1 + '</div>' +
@@ -396,11 +403,11 @@
     });
 
     // Gruppentabellen auf einem Slide
-    var anyGroupResults = CORNHOLE_MATCHES.some(function(m) { return m.group && m.score1 !== null; });
-    if (anyGroupResults) {
+    var anyGroupDone = CORNHOLE_MATCHES.some(function(m) { return m.group && m.done; });
+    if (anyGroupDone) {
       var groupTablesHtml = "";
       ["A", "B", "C"].forEach(function(g) {
-        var hasResults = CORNHOLE_MATCHES.some(function(m) { return m.group === g && m.score1 !== null; });
+        var hasResults = CORNHOLE_MATCHES.some(function(m) { return m.group === g && m.done; });
         if (!hasResults) return;
         groupTablesHtml += '<div style="margin-bottom:16px"><div style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent-2);margin-bottom:6px;font-weight:700">Gruppe ' + g + '</div>';
         groupTablesHtml += renderStandingsTable(g) + '</div>';
@@ -412,7 +419,7 @@
     var allStats = {};
     CORNHOLE_TEAMS.forEach(function(t) { allStats[t.id] = { id: t.id, name: t.name, group: t.group, w: 0, l: 0, pf: 0, pa: 0 }; });
     CORNHOLE_MATCHES.forEach(function(m) {
-      if (m.score1 === null) return;
+      if (!m.done) return;
       var s1 = allStats[m.team1], s2 = allStats[m.team2];
       if (!s1 || !s2) return;
       s1.pf += m.score1; s1.pa += m.score2;

@@ -171,7 +171,7 @@
     if (typeof CORNHOLE_TEAMS_CONFIG !== "undefined")
       CORNHOLE_TEAMS_CONFIG.forEach(t => CORNHOLE_TEAMS.push({ ...t, players: [] }));
     if (typeof CORNHOLE_MATCHES_CONFIG !== "undefined")
-      CORNHOLE_MATCHES_CONFIG.forEach(m => CORNHOLE_MATCHES.push({ ...m, team1: null, team2: null, score1: null, score2: null }));
+      CORNHOLE_MATCHES_CONFIG.forEach(m => CORNHOLE_MATCHES.push({ ...m, team1: null, team2: null, score1: null, score2: null, done: false }));
     if (typeof CORNHOLE_PAIRINGS !== "undefined")
       CORNHOLE_MATCHES.forEach(m => {
         if (CORNHOLE_PAIRINGS[m.id]) { m.team1 = CORNHOLE_PAIRINGS[m.id][0]; m.team2 = CORNHOLE_PAIRINGS[m.id][1]; }
@@ -179,7 +179,7 @@
     if (typeof CORNHOLE_RESULTS !== "undefined")
       CORNHOLE_MATCHES.forEach(m => {
         const r = CORNHOLE_RESULTS[m.id];
-        if (r && typeof r[0] === "number" && typeof r[1] === "number") { m.score1 = r[0]; m.score2 = r[1]; }
+        if (r && typeof r[0] === "number" && typeof r[1] === "number") { m.score1 = r[0]; m.score2 = r[1]; m.done = !!r[2]; }
       });
 
     const teamMap = Object.fromEntries(CORNHOLE_TEAMS.map(t => [t.id, t]));
@@ -248,7 +248,7 @@
             const v1 = m.score1 !== null ? m.score1 : "";
             const v2 = m.score2 !== null ? m.score2 : "";
             if (isKO) {
-              const koDone = m.score1 !== null ? "checked" : "";
+              const koDone = m.done ? "checked" : "";
               html += `
                 <div class="re-match re-match--ko">
                   <div class="re-match__time">${m.time}</div>
@@ -269,7 +269,7 @@
             } else {
               const t1 = teamMap[m.team1]?.name || (m.label1 || "TBD");
               const t2 = teamMap[m.team2]?.name || (m.label2 || "TBD");
-              const done = m.score1 !== null ? "checked" : "";
+              const done = m.done ? "checked" : "";
               html += `
                 <div class="re-match">
                   <div class="re-match__time">${m.time}</div>
@@ -295,13 +295,13 @@
 
     function readScores() {
       const scores = {};
-      document.querySelectorAll(".re-match__done").forEach(cb => {
-        if (!cb.checked) return;
-        const id = Number(cb.dataset.match);
-        const i1 = document.querySelector(`.re-match__input[data-match="${id}"][data-side="1"]`);
-        const i2 = document.querySelector(`.re-match__input[data-match="${id}"][data-side="2"]`);
-        const v1 = Number(i1?.value || 0), v2 = Number(i2?.value || 0);
-        scores[id] = [v1, v2];
+      document.querySelectorAll(".re-match__input[data-side='1']").forEach(input => {
+        const id = Number(input.dataset.match);
+        const other = document.querySelector(`.re-match__input[data-match="${id}"][data-side="2"]`);
+        const v1 = input.value.trim(), v2 = other?.value.trim();
+        if (v1 === "" && v2 === "") return;
+        const done = document.querySelector(`.re-match__done[data-match="${id}"]`)?.checked || false;
+        scores[id] = [Number(v1 || 0), Number(v2 || 0), done];
       });
       return scores;
     }
@@ -323,7 +323,7 @@
       ["A", "B", "C"].forEach(g => {
         lines.push(`  // Gruppenphase ${g}`);
         groupMatches.filter(m => m.group === g).forEach(m => {
-          if (scores[m.id]) lines.push(`  ${m.id}: [${scores[m.id][0]}, ${scores[m.id][1]}],`);
+          if (scores[m.id]) lines.push(`  ${m.id}: [${scores[m.id][0]}, ${scores[m.id][1]}, ${scores[m.id][2]}],`);
         });
       });
       const koMatches = CORNHOLE_MATCHES.filter(m => m.group === null);

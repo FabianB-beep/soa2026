@@ -192,6 +192,7 @@ if (typeof CORNHOLE_RESULTS !== "undefined") {
     if (r && typeof r[0] === "number" && typeof r[1] === "number") {
       m.score1 = r[0];
       m.score2 = r[1];
+      m.done = !!r[2];
     }
   });
 }
