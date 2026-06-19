@@ -34,13 +34,14 @@
     .re-group { margin-bottom:32px; }
     .re-group__title { font-family:var(--font-display); font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--accent-2); margin-bottom:10px; }
     .re-matches { display:flex; flex-direction:column; gap:6px; }
-    .re-match { display:grid; grid-template-columns:52px 1fr auto 1fr; align-items:center; gap:10px; background:var(--bg-3); border:1px solid var(--border); border-radius:var(--r-md); padding:10px 14px; }
+    .re-match { display:grid; grid-template-columns:52px 1fr auto 1fr 28px; align-items:center; gap:10px; background:var(--bg-3); border:1px solid var(--border); border-radius:var(--r-md); padding:10px 14px; }
     .re-match__time { font-size:0.78rem; color:var(--text-muted); font-weight:600; white-space:nowrap; }
     .re-match__team { font-size:0.85rem; font-weight:500; }
     .re-match__team--right { text-align:right; }
     .re-match__score { display:flex; align-items:center; gap:6px; flex-shrink:0; }
     .re-match__input { width:48px; background:var(--bg-2); border:1px solid var(--border); border-radius:8px; padding:6px 0; text-align:center; color:var(--text); font-size:0.95rem; font-weight:700; font-family:var(--font-display); outline:none; transition:border-color 0.2s; }
     .re-match__input:focus { border-color:var(--accent); }
+    .re-match__done { width:18px; height:18px; accent-color:var(--accent); cursor:pointer; }
     .re-match__sep { color:var(--text-muted); font-weight:700; }
     .re-actions { display:flex; align-items:center; gap:16px; margin-top:28px; flex-wrap:wrap; }
     .re-save-btn { padding:12px 32px; background:var(--gradient); border:none; border-radius:999px; color:#fff; font-size:0.9rem; font-weight:700; font-family:var(--font-display); letter-spacing:0.05em; cursor:pointer; transition:opacity 0.2s,box-shadow 0.2s; }
@@ -71,8 +72,9 @@
 
     @media (max-width:600px) {
       .gh-settings__fields { grid-template-columns:1fr; }
-      .re-match { grid-template-columns:44px 1fr; grid-template-rows:auto auto; }
+      .re-match { grid-template-columns:44px 1fr 28px; grid-template-rows:auto auto; }
       .re-match__score { grid-column:1 / -1; justify-content:center; }
+      .re-match__done { grid-row:1; grid-column:3; }
       .re-match__team--right { text-align:left; }
       .re-match__ko-teams { flex-direction: column; align-items: stretch; }
       .re-match__select { min-width: unset; }
@@ -246,6 +248,7 @@
             const v1 = m.score1 !== null ? m.score1 : "";
             const v2 = m.score2 !== null ? m.score2 : "";
             if (isKO) {
+              const koDone = m.score1 !== null ? "checked" : "";
               html += `
                 <div class="re-match re-match--ko">
                   <div class="re-match__time">${m.time}</div>
@@ -261,10 +264,12 @@
                     ${teamSelect(m.id, 2, m.team2)}
                   </div>
                   <div class="re-match__field-info">Feld ${m.field}</div>
+                  <input class="re-match__done" type="checkbox" data-match="${m.id}" title="Spiel beendet" ${koDone} />
                 </div>`;
             } else {
               const t1 = teamMap[m.team1]?.name || (m.label1 || "TBD");
               const t2 = teamMap[m.team2]?.name || (m.label2 || "TBD");
+              const done = m.score1 !== null ? "checked" : "";
               html += `
                 <div class="re-match">
                   <div class="re-match__time">${m.time}</div>
@@ -277,6 +282,7 @@
                            data-match="${m.id}" data-side="2" value="${v2}" placeholder="–" />
                   </div>
                   <div class="re-match__team re-match__team--right">${t2}</div>
+                  <input class="re-match__done" type="checkbox" data-match="${m.id}" title="Spiel beendet" ${done} />
                 </div>`;
             }
           });
@@ -289,11 +295,13 @@
 
     function readScores() {
       const scores = {};
-      document.querySelectorAll(".re-match__input[data-side='1']").forEach(input => {
-        const id    = Number(input.dataset.match);
-        const other = document.querySelector(`.re-match__input[data-match="${id}"][data-side="2"]`);
-        const v1 = input.value.trim(), v2 = other?.value.trim();
-        if (v1 !== "" && v2 !== "") scores[id] = [Number(v1), Number(v2)];
+      document.querySelectorAll(".re-match__done").forEach(cb => {
+        if (!cb.checked) return;
+        const id = Number(cb.dataset.match);
+        const i1 = document.querySelector(`.re-match__input[data-match="${id}"][data-side="1"]`);
+        const i2 = document.querySelector(`.re-match__input[data-match="${id}"][data-side="2"]`);
+        const v1 = Number(i1?.value || 0), v2 = Number(i2?.value || 0);
+        scores[id] = [v1, v2];
       });
       return scores;
     }
