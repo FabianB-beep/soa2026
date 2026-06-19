@@ -236,11 +236,16 @@ function renderCornholeSchedule() {
   const teamMap = Object.fromEntries(CORNHOLE_TEAMS.map(t => [t.id, t]));
 
   const sorted = [...CORNHOLE_MATCHES].sort((a, b) => a.time.localeCompare(b.time) || a.field - b.field);
-  const timeSlots = [...new Set(sorted.map(m => m.time))];
+  const slotKeys = [];
+  sorted.forEach(m => {
+    const key = m.time + "|" + m.round;
+    if (!slotKeys.includes(key)) slotKeys.push(key);
+  });
 
-  container.innerHTML = `<div class="ch-rounds">${timeSlots.map(time => {
-    const matches = sorted.filter(m => m.time === time);
-    const roundLabel = matches[0].round !== "Gruppenphase" ? matches[0].round + " · " : "";
+  container.innerHTML = `<div class="ch-rounds">${slotKeys.map(key => {
+    const [time, round] = key.split("|");
+    const matches = sorted.filter(m => m.time === time && m.round === round);
+    const roundLabel = round !== "Gruppenphase" ? round + " · " : "";
     return `
       <div>
         <div class="ch-round__title">${roundLabel}${time} Uhr</div>
