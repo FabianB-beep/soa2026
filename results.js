@@ -23,7 +23,7 @@ const CORNHOLE_TEAMS_CONFIG = [
   { id:  7, name: "Unicorns",                            group: "B" },
   { id:  8, name: "Two Girls one Sack",                  group: "B" },
   { id: 15, name: "Team Schäl Sick",                     group: "B" },
-  { id: 18, name: "Team Corn",                           group: "B" },
+  { id: 18, name: "DiaWP",                                group: "B" },
   { id:  9, name: "Team Hecken Frisch-Vermählt",         group: "C" },
   { id: 10, name: "Die brunftigen Beutel Boys",          group: "C" },
   { id: 11, name: "Mais-ter Mädels",                     group: "C" },
