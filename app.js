@@ -250,8 +250,8 @@ function renderCornholeSchedule() {
             const tbd1  = !m.team1;
             const tbd2  = !m.team2;
             const hasScore = m.score1 !== null && m.score2 !== null;
-            const isLive   = hasScore && m.team1 && m.score1 < 21 && m.score2 < 21;
-            const isDone   = hasScore && !isLive;
+            const isLive   = hasScore && !m.done;
+            const isDone   = hasScore && m.done;
             const score = hasScore
               ? `<span class="ch-match__score${isDone ? " ch-match__score--set" : " ch-match__score--live"}">${m.score1}:${m.score2}${isLive ? ' <span class="ch-match__live-dot"></span>' : ""}</span>`
               : `<span class="ch-match__score">–:–</span>`;
