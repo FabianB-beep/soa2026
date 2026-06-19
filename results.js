@@ -92,8 +92,8 @@ const CORNHOLE_MATCHES_CONFIG = [
   { id: 47, round: "Halbfinale", group: null, field: 2, time: "18:30", label1: "1. Gruppe B", label2: "2. Gruppe C" },
   { id: 48, round: "Halbfinale", group: null, field: 3, time: "18:30", label1: "1. Gruppe C", label2: "2. Gruppe A"     },
   // ── Platz 3 & Finale (19:00) ──────────────────────────────────────────────
-  { id: 49, round: "Platz 3", group: null, field: 1, time: "19:00", label1: "3. Sieger HF", label2: "Bester Verlierer HF" },
-  { id: 50, round: "Finale",  group: null, field: 2, time: "19:00", label1: "1. Sieger HF", label2: "2. Sieger HF"         },
+  { id: 49, round: "Platz 3", group: null, field: 1, time: "18:50", label1: "3. Sieger HF", label2: "Bester Verlierer HF" },
+  { id: 50, round: "Finale",  group: null, field: 1, time: "19:00", label1: "1. Sieger HF", label2: "2. Sieger HF"         },
 ];
 
 
