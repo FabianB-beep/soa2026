@@ -235,16 +235,18 @@ function renderCornholeSchedule() {
 
   const teamMap = Object.fromEntries(CORNHOLE_TEAMS.map(t => [t.id, t]));
 
-  const rounds = [...new Set(CORNHOLE_MATCHES.map(m => m.round))];
+  const sorted = [...CORNHOLE_MATCHES].sort((a, b) => a.time.localeCompare(b.time) || a.field - b.field);
+  const timeSlots = [...new Set(sorted.map(m => m.time))];
 
-  container.innerHTML = `<div class="ch-rounds">${rounds.map(round => {
-    const matches = CORNHOLE_MATCHES.filter(m => m.round === round);
-    const isFinal = round === "Finale";
+  container.innerHTML = `<div class="ch-rounds">${timeSlots.map(time => {
+    const matches = sorted.filter(m => m.time === time);
+    const roundLabel = matches[0].round !== "Gruppenphase" ? matches[0].round + " · " : "";
     return `
       <div>
-        <div class="ch-round__title">${round}</div>
+        <div class="ch-round__title">${roundLabel}${time} Uhr</div>
         <div class="ch-matches">
           ${matches.map(m => {
+            const isFinal = m.round === "Finale";
             const t1    = m.team1 ? teamMap[m.team1]?.name : (m.label1 || "TBD");
             const t2    = m.team2 ? teamMap[m.team2]?.name : (m.label2 || "TBD");
             const tbd1  = !m.team1;
