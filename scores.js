@@ -16,6 +16,6 @@ const CORNHOLE_RESULTS = {
 
 const CORNHOLE_KO_PAIRINGS = {
   // Halbfinale
-  46: [6, 13],
+  46: [4, 5],
   // Platz 3 & Finale
 };
