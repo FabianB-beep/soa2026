@@ -10,10 +10,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
   <meta name="theme-color" content="#0a0003" />
   <style>
-    .ticker { overflow:hidden; white-space:nowrap; background:var(--accent); color:#fff; font-family:var(--font-display); font-size:0.85rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:8px 0; position:relative; z-index:100; }
-    .ticker__track { display:inline-block; animation:ticker 20s linear infinite; }
-    .ticker__track span { padding:0 2em; }
+    .ticker { overflow:hidden; white-space:nowrap; background:#8b1a1a; color:rgba(255,255,255,0.9); font-family:var(--font-display); font-size:0.8rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; padding:6px 0; position:fixed; top:0; left:0; right:0; z-index:99; }
+    .ticker__track { display:flex; width:max-content; animation:ticker 25s linear infinite; }
+    .ticker__track span { flex-shrink:0; padding:0 1.5em; }
     @keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+    .nav { top:28px !important; }
   </style>
 </head>
 <body>
