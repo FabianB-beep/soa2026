@@ -79,5 +79,5 @@ const HELFER_SLOTS = [
 const HELFER_DAUERDIENSTE = [
   { aufgabe: "Aggi-Dienst",        verantwortlich: "Heiko Holger Hirsch", helfer: ["Andreas Krings"],             note: "Tankwart – dauerhaft vor Ort" },
   { aufgabe: "Moderation Cornhole Turnier", verantwortlich: "Axel Rüddel", helfer: [],                            note: "" },
-  { aufgabe: "Künstlerbetreuung",  verantwortlich: "Fabian Buchmüller",    helfer: ["Andreas Rechmann"],          note: "Backstage, Catering Künstler, Koordination" },
+  { aufgabe: "Betreuung Bühne",    verantwortlich: "Fabian Buchmüller",    helfer: ["Andreas Rechmann", "Tim Ulama"], note: "Backstage, Koordination" },
 ];
