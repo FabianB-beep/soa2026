@@ -176,6 +176,10 @@
       CORNHOLE_MATCHES.forEach(m => {
         if (CORNHOLE_PAIRINGS[m.id]) { m.team1 = CORNHOLE_PAIRINGS[m.id][0]; m.team2 = CORNHOLE_PAIRINGS[m.id][1]; }
       });
+    if (typeof CORNHOLE_KO_PAIRINGS !== "undefined")
+      CORNHOLE_MATCHES.forEach(m => {
+        if (CORNHOLE_KO_PAIRINGS[m.id]) { m.team1 = CORNHOLE_KO_PAIRINGS[m.id][0]; m.team2 = CORNHOLE_KO_PAIRINGS[m.id][1]; }
+      });
     if (typeof CORNHOLE_RESULTS !== "undefined")
       CORNHOLE_MATCHES.forEach(m => {
         const r = CORNHOLE_RESULTS[m.id];
@@ -194,8 +198,8 @@
     const ghBranchEl = document.getElementById("ghBranch");
 
     ghTokenEl.value  = localStorage.getItem(LS_TOKEN)  || "";
-    ghRepoEl.value   = localStorage.getItem(LS_REPO)   || "fabianb-beep/soa-page";
-    ghBranchEl.value = localStorage.getItem(LS_BRANCH) || "main";
+    ghRepoEl.value   = localStorage.getItem(LS_REPO)   || "fabianb-beep/soa2026";
+    ghBranchEl.value = localStorage.getItem(LS_BRANCH) || "claude/serene-hawking-3oijvj";
 
     [ghTokenEl, ghRepoEl, ghBranchEl].forEach(el => {
       el.addEventListener("input", () => {

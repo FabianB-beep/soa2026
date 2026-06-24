@@ -246,18 +246,31 @@
       71:"❄️",73:"❄️",75:"❄️",80:"🌦️",81:"🌦️",82:"🌦️",
       95:"⛈️",96:"⛈️",99:"⛈️"};
     var DAYS = {"2026-06-26":"Fr, 26.","2026-06-27":"Sa, 27.","2026-06-28":"So, 28."};
-    var url = "https://api.open-meteo.com/v1/forecast?latitude=50.63&longitude=7.35&daily=temperature_2m_max,temperature_2m_min,weather_code&start_date=2026-06-26&end_date=2026-06-28&timezone=Europe%2FBerlin";
+    var url = "https://api.brightsky.dev/weather?lat=50.63&lon=7.35&date=2026-06-26&last_date=2026-06-29&tz=Europe/Berlin";
     fetch(url).then(function(r){return r.json()}).then(function(d){
       var el = document.getElementById("weather");
-      if(!el||!d.daily) return;
+      if(!el||!d.weather) return;
+      var dailyMap = {};
+      d.weather.forEach(function(w){
+        var date = w.timestamp.substring(0,10);
+        if(!DAYS[date]) return;
+        if(!dailyMap[date]) dailyMap[date] = {temps:[], icons:[]};
+        dailyMap[date].temps.push(w.temperature);
+        if(w.icon) dailyMap[date].icons.push(w.icon);
+      });
+      var iconToWMO = {"clear-day":0,"clear-night":0,"partly-cloudy-day":2,"partly-cloudy-night":2,
+        "cloudy":3,"fog":45,"wind":3,"rain":61,"sleet":71,"snow":75,"hail":96,"thunderstorm":95};
       var html = "";
-      d.daily.time.forEach(function(date,i){
-        var code = d.daily.weather_code[i];
+      Object.keys(DAYS).forEach(function(date){
+        var day = dailyMap[date];
+        if(!day) return;
+        var hi = Math.round(Math.max.apply(null, day.temps));
+        var lo = Math.round(Math.min.apply(null, day.temps));
+        var noon = day.icons[Math.floor(day.icons.length/2)] || "cloudy";
+        var code = iconToWMO[noon]; if(code===undefined) code=3;
         var icon = WMO[code] || "☁️";
-        var hi = Math.round(d.daily.temperature_2m_max[i]);
-        var lo = Math.round(d.daily.temperature_2m_min[i]);
         html += '<div class="weather-day">' +
-          '<div class="weather-day__label">' + (DAYS[date]||date) + '</div>' +
+          '<div class="weather-day__label">' + DAYS[date] + '</div>' +
           '<div class="weather-day__icon">' + icon + '</div>' +
           '<div class="weather-day__temp">' + lo + '° / ' + hi + '°</div></div>';
       });
