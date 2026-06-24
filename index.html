@@ -9,6 +9,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
   <meta name="theme-color" content="#0a0003" />
+  <style>
+    .ticker { overflow:hidden; white-space:nowrap; background:var(--accent); color:#fff; font-family:var(--font-display); font-size:0.85rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:8px 0; position:relative; z-index:100; }
+    .ticker__track { display:inline-block; animation:ticker 20s linear infinite; }
+    .ticker__track span { padding:0 2em; }
+    @keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+  </style>
 </head>
 <body>
 
@@ -30,6 +36,13 @@
       <li><a href="anreise.html" class="nav__link">Anreise</a></li>
     </ul>
   </nav>
+
+  <!-- TICKER -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker__track">
+      <span>#S:O:A 2026</span><span>BITCH ON THE RUN</span><span>#S:O:A 2026</span><span>EXEMPLE</span><span>#S:O:A 2026</span><span>MIXED PICKLES</span><span>#S:O:A 2026</span><span>ALLES AUF ZUCKER</span><span>#S:O:A 2026</span><span>BITCH ON THE RUN</span><span>#S:O:A 2026</span><span>EXEMPLE</span><span>#S:O:A 2026</span><span>MIXED PICKLES</span><span>#S:O:A 2026</span><span>ALLES AUF ZUCKER</span>
+    </div>
+  </div>
 
   <!-- HERO -->
   <section class="hero" id="home">
