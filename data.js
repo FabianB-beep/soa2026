@@ -63,19 +63,17 @@ const CORNHOLE_MATCHES = [];  // wird aus results.js befüllt
 // ── INTERNE HELFERDATEN ───────────────────────────────────────────────────────
 
 const HELFER_SLOTS = [
-  // ── Bändchenausgabe ───────────────────────────────────────────────────────
-  { bereich: "Bändchenausgabe", slot: "14:00 – 16:00", helfer: ["Max Mustermann", "Lisa Klein"] },
-  { bereich: "Bändchenausgabe", slot: "16:00 – 19:00", helfer: ["Tom Sauer", "Anna Becker"] },
-  { bereich: "Bändchenausgabe", slot: "19:00 – 22:00", helfer: ["Julia Müller", "Ben Roth"] },
   // ── Theke ─────────────────────────────────────────────────────────────────
-  { bereich: "Theke", slot: "15:00 – 18:00", helfer: ["Peter Herrmann", "Sandra Vogt", "Kai Fischer"] },
-  { bereich: "Theke", slot: "18:00 – 21:00", helfer: ["Markus Braun", "Laura Neumann", "Stefan Wolf"] },
-  { bereich: "Theke", slot: "21:00 – 00:00", helfer: ["Tobias Lang", "Nina Schäfer", "David Koch"] },
-  { bereich: "Theke", slot: "00:00 – 03:00", helfer: ["Felix Huber", "Lena Walter"] },
+  { bereich: "Theke", slot: "15:00 – 18:00", helfer: ["Stammtisch"] },
+  { bereich: "Theke", slot: "18:00 – 20:00", helfer: ["Daniel Petöcz", "Heiko Lindner", "Schello", "Stefan Groß", "Bine Krumscheid"] },
+  { bereich: "Theke", slot: "20:00 – 22:00", helfer: ["Dani Dasbach", "Anja Tiffe", "Krümel"] },
+  { bereich: "Theke", slot: "22:00 – 01:00", helfer: ["Rainer", "Witte", "Carsten"] },
   // ── Grill ─────────────────────────────────────────────────────────────────
-  { bereich: "Grill", slot: "15:00 – 18:00", helfer: ["Christian Schmitt", "Rene Bauer"] },
-  { bereich: "Grill", slot: "18:00 – 21:00", helfer: ["Oliver Stein", "Marco Werner"] },
-  { bereich: "Grill", slot: "21:00 – 00:00", helfer: ["Kevin Jung", "Dennis Pfeiffer"] },
+  { bereich: "Grill", slot: "15:00 – 17:30", helfer: ["Stammtisch"] },
+  { bereich: "Grill", slot: "17:30 – 20:00", helfer: ["Nicole Krumscheid", "Christina Schellberg"] },
+  { bereich: "Grill", slot: "20:00 – 22:00", helfer: ["Christel Meyer", "Hildegard Börder"] },
+  // ── Bändchenausgabe ───────────────────────────────────────────────────────
+  { bereich: "Bändchenausgabe", slot: "17:30 – 22:00", helfer: ["Sarah Lissen-Rüddel", "Steffi Reif", "Hannah Große"] },
 ];
 
 const HELFER_DAUERDIENSTE = [
