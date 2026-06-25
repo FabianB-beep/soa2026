@@ -3,10 +3,10 @@
 const LINEUP = [
   {
     day: 1, stage: "cornhole", time: "17:00",
-    artist: "Drops",
+    artist: "DRoPS",
     genre:  "80er/90er Pop und Rock",
     origin: "Königswinter",
-    desc:   "Drops! Man nehme: Ein Stage-Piano, eine Holzblocktrommel und zwei Sänger. Reicht euch noch nicht? Abwarten!",
+    desc:   "DRoPS! Man nehme: Ein Stage-Piano, eine Holzblocktrommel und zwei Sänger. Reicht euch noch nicht? Abwarten!",
     url:    "https://www.backstagepro.de/dropsrockt",
   },
   {
