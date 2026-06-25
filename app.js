@@ -38,7 +38,7 @@ const festivalDate = new Date("2026-06-27T16:00:00");
 function updateCountdown() {
   const diff = festivalDate - Date.now();
   if (diff <= 0) {
-    document.getElementById("countdown").innerHTML = '<p class="countdown__live">Das Festival läuft gerade!</p>';
+    document.getElementById("countdown").innerHTML = '<p class="countdown__live">S:O:A running!</p>';
     return;
   }
   const d = Math.floor(diff / 86400000);
