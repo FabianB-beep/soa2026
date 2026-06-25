@@ -33,7 +33,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 // ── COUNTDOWN ────────────────────────────────────────────────────────────────
 
-const festivalDate = new Date("2026-06-27T12:00:00");
+const festivalDate = new Date("2026-06-27T16:00:00");
 
 function updateCountdown() {
   const diff = festivalDate - Date.now();
