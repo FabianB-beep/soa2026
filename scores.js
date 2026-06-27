@@ -26,6 +26,8 @@ const CORNHOLE_RESULTS = {
   18: [11, 4, true],
   // Halbfinale
   19: [11, 1],
+  20: [11, 6],
+  21: [7, 11],
   // Platz 3 & Finale
 };
 
