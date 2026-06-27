@@ -167,7 +167,7 @@ if (typeof CORNHOLE_TEAMS_CONFIG !== "undefined") {
 }
 if (typeof CORNHOLE_MATCHES_CONFIG !== "undefined") {
   CORNHOLE_MATCHES_CONFIG.forEach(m => CORNHOLE_MATCHES.push({
-    ...m, team1: null, team2: null, score1: null, score2: null,
+    ...m, team1: null, team2: null, score1: null, score2: null, done: false,
   }));
 }
 if (typeof CORNHOLE_PAIRINGS !== "undefined") {
