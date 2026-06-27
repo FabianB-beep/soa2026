@@ -4,6 +4,7 @@
 
 const CORNHOLE_RESULTS = {
   // Gruppenphase A
+  1: [0, 0, false],
   // Gruppenphase B
   // Gruppenphase C
   // Halbfinale
