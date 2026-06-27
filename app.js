@@ -285,7 +285,7 @@ renderCornholeSchedule();
 function buildStats() {
   const stats = {};
   CORNHOLE_TEAMS.forEach(t => {
-    stats[t.id] = { id: t.id, name: t.name, group: t.group, sp: 0, s: 0, n: 0, pkt: 0 };
+    stats[t.id] = { id: t.id, name: t.name, group: t.group, sp: 0, s: 0, u: 0, n: 0, pkt: 0 };
   });
   CORNHOLE_MATCHES.filter(m => m.group !== null).forEach(m => {
     if (m.score1 === null || m.score2 === null || !m.team1 || !m.team2) return;
@@ -293,8 +293,9 @@ function buildStats() {
     const s1 = stats[m.team1], s2 = stats[m.team2];
     if (!s1 || !s2) return;
     s1.sp++; s2.sp++;
-    if (m.score1 > m.score2) { s1.s++; s2.n++; s1.pkt += m.score1 - m.score2; }
-    else if (m.score2 > m.score1) { s2.s++; s1.n++; s2.pkt += m.score2 - m.score1; }
+    if (m.score1 > m.score2) { s1.s++; s2.n++; s1.pkt += 3; }
+    else if (m.score2 > m.score1) { s2.s++; s1.n++; s2.pkt += 3; }
+    else { s1.u++; s2.u++; s1.pkt += 1; s2.pkt += 1; }
   });
   return stats;
 }
@@ -308,8 +309,9 @@ function standingsTable(rows) {
           <th class="ch-standings__name">Team</th>
           <th title="Gespielte Spiele">Sp</th>
           <th title="Siege">S</th>
+          <th title="Unentschieden">U</th>
           <th title="Niederlagen">N</th>
-          <th title="Cancellation-Punkte">Pkt</th>
+          <th title="Punkte">Pkt</th>
         </tr>
       </thead>
       <tbody>
@@ -319,6 +321,7 @@ function standingsTable(rows) {
             <td class="ch-standings__name">${t.name}</td>
             <td>${t.sp}</td>
             <td>${t.s}</td>
+            <td>${t.u}</td>
             <td>${t.n}</td>
             <td class="ch-standings__pkt">${t.pkt}</td>
           </tr>
