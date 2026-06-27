@@ -5,10 +5,13 @@
 const CORNHOLE_RESULTS = {
   // Gruppenphase A
   1: [2, 11, true],
+  2: [7, 11, true],
   // Gruppenphase B
-  7: [4, 11, true],
+  7: [11, 4, true],
+  8: [3, 27, true],
   // Gruppenphase C
   13: [10, 15, true],
+  14: [5, 3, true],
   // Halbfinale
   // Platz 3 & Finale
 };
