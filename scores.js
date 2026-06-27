@@ -37,4 +37,6 @@ const CORNHOLE_KO_PAIRINGS = {
   20: [18, 12],
   21: [10, 3],
   // Platz 3 & Finale
+  22: [3, 10],
+  23: [7, 18],
 };
