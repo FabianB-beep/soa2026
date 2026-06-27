@@ -289,7 +289,7 @@ function buildStats() {
   });
   CORNHOLE_MATCHES.filter(m => m.group !== null).forEach(m => {
     if (m.score1 === null || m.score2 === null || !m.team1 || !m.team2) return;
-    if (m.score1 < 21 && m.score2 < 21) return; // noch live, nicht werten
+    if (!m.done) return;
     const s1 = stats[m.team1], s2 = stats[m.team2];
     if (!s1 || !s2) return;
     s1.sp++; s2.sp++;
