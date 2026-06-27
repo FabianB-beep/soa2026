@@ -8,16 +8,19 @@ const CORNHOLE_RESULTS = {
   2: [7, 11, true],
   3: [11, 1, true],
   4: [6, 11, true],
+  5: [0, 12, true],
   // Gruppenphase B
   7: [11, 4, true],
   8: [3, 11, true],
   9: [3, 11, true],
   10: [9, 10, true],
+  11: [8, 11, true],
   // Gruppenphase C
   13: [10, 15, true],
   14: [5, 3, true],
   15: [7, 6, true],
   16: [1, 11, true],
+  17: [8, 12, true],
   // Halbfinale
   // Platz 3 & Finale
 };
