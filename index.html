@@ -9,41 +9,20 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
   <meta name="theme-color" content="#0a0003" />
-  <style>
-    .ticker { overflow:hidden; white-space:nowrap; background:#8b1a1a; color:rgba(255,255,255,0.9); font-family:var(--font-display); font-size:0.8rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; padding:6px 0; position:fixed; top:0; left:0; right:0; z-index:99; }
-    .ticker__track { display:flex; width:max-content; animation:ticker 25s linear infinite; }
-    .ticker__track span { flex-shrink:0; padding:0 1.5em; }
-    @keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
-    .nav { top:28px !important; }
-  </style>
 </head>
 <body>
 
   <!-- NAV -->
   <nav class="nav" id="nav">
     <a href="#home" class="nav__logo">S:O:A</a>
-    <div class="nav__quicklinks--mobile">
-      <a href="#lineup"   class="nav__quicklink">Line-Up</a>
-      <a href="#cornhole" class="nav__quicklink">Cornhole</a>
-    </div>
     <button class="nav__burger" id="burger" aria-label="Menü öffnen">
       <span></span><span></span><span></span>
     </button>
     <ul class="nav__links" id="navLinks">
       <li><a href="#home" class="nav__link" data-section="home">Start</a></li>
       <li><a href="#about" class="nav__link" data-section="about">Über uns</a></li>
-      <li><a href="#lineup" class="nav__link" data-section="lineup">Line-Up</a></li>
-      <li><a href="#cornhole" class="nav__link" data-section="cornhole">Cornhole</a></li>
-      <li><a href="anreise.html" class="nav__link">Anreise</a></li>
     </ul>
   </nav>
-
-  <!-- TICKER -->
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker__track">
-      <span>#S:O:A 2026</span><span>&gt;&gt; DRoPS &lt;&lt;</span><span>#S:O:A 2026</span><span>&gt;&gt; BITCH ON THE RUN &lt;&lt;</span><span>#S:O:A 2026</span><span>&gt;&gt; EXEMPLE &lt;&lt;</span><span>#S:O:A 2026</span><span>&gt;&gt; MIXED PICKLES &lt;&lt;</span><span>#S:O:A 2026</span><span>&gt;&gt; ALLES AUF ZUCKER &lt;&lt;</span><span>#S:O:A 2026</span><span>&gt;&gt; DRoPS &lt;&lt;</span><span>#S:O:A 2026</span><span>&gt;&gt; BITCH ON THE RUN &lt;&lt;</span><span>#S:O:A 2026</span><span>&gt;&gt; EXEMPLE &lt;&lt;</span><span>#S:O:A 2026</span><span>&gt;&gt; MIXED PICKLES &lt;&lt;</span><span>#S:O:A 2026</span><span>&gt;&gt; ALLES AUF ZUCKER &lt;&lt;</span>
-    </div>
-  </div>
 
   <!-- HERO -->
   <section class="hero" id="home">
@@ -56,16 +35,7 @@
       <p class="hero__eyebrow">27. Juni 2026 · Pfaffenbachtal Windhagen</p>
       <h1 class="hero__title">S:O:A<br /><span>Rock'n'Bach</span></h1>
       <p class="hero__sub">25 Jahre Stammtisch Windhagen</p>
-      <div class="hero__countdown" id="countdown">
-        <div class="countdown__block"><span class="countdown__num" id="cd-days">--</span><span class="countdown__label">Tage</span></div>
-        <div class="countdown__sep">:</div>
-        <div class="countdown__block"><span class="countdown__num" id="cd-hours">--</span><span class="countdown__label">Stunden</span></div>
-        <div class="countdown__sep">:</div>
-        <div class="countdown__block"><span class="countdown__num" id="cd-mins">--</span><span class="countdown__label">Minuten</span></div>
-        <div class="countdown__sep">:</div>
-        <div class="countdown__block"><span class="countdown__num" id="cd-secs">--</span><span class="countdown__label">Sekunden</span></div>
-      </div>
-      <div class="hero__weather" id="weather"></div>
+      <p class="hero__thanks">Die Party ist vorbei und wir sagen DANKE!<br />Danke an alle, die das S:O 2026 zu einem unvergesslichen Tag gemacht haben.<br />Wir freuen uns schon jetzt auf ein Wiedersehen beim nächsten S:O:A – bis bald! 🤘</p>
       <div class="hero__actions">
         <a href="#lineup" class="btn btn--ghost">Line-Up entdecken</a>
       </div>
@@ -98,18 +68,16 @@
           </ul>
         </div>
         <div class="about__cards">
-          <a class="about__card" href="#lineup">
+          <div class="about__card">
             <div class="about__card-icon">🎵</div>
             <h3>Live Music</h3>
             <p>Lokale Bands die Spaß an Musik haben und mit euch feiern</p>
-            <span class="about__card-arrow">→</span>
-          </a>
-          <a class="about__card" href="#cornhole">
+          </div>
+          <div class="about__card">
             <div class="about__card-icon">🤝</div>
             <h3>Cornhole Turnier</h3>
             <p>Das erste Cornhole Turnier im Paffenbachtal</p>
-            <span class="about__card-arrow">→</span>
-          </a>
+          </div>
 
         </div>
       </div>
@@ -117,7 +85,7 @@
   </section>
 
   <!-- LINEUP -->
-  <section class="lineup section" id="lineup">
+  <section class="lineup section" id="lineup" style="display:none;">
     <div class="container">
       <div class="section__header">
         <span class="section__tag">Programm</span>
@@ -146,7 +114,7 @@
 
 
   <!-- CORNHOLE -->
-  <section class="cornhole section" id="cornhole">
+  <section class="cornhole section" id="cornhole" style="display:none;">
     <div class="container">
       <div class="section__header">
         <span class="section__tag">Turnier</span>
@@ -213,14 +181,11 @@
           <h4>Links</h4>
           <ul>
             <li><a href="#about">Über uns</a></li>
-            <li><a href="#lineup">Line-Up</a></li>
-            <li><a href="#cornhole">Cornhole</a></li>
           </ul>
         </div>
         <div>
           <h4>Info</h4>
           <ul>
-            <li><a href="anreise.html">Anreise</a></li>
             <li><a href="spielplan.html">Spielplan</a></li>
           </ul>
         </div>
@@ -253,45 +218,6 @@
     </div>
   </div>
 
-  <script>
-  (function(){
-    var WMO = {0:"☀️",1:"🌤️",2:"⛅",3:"☁️",45:"🌫️",48:"🌫️",
-      51:"🌧️",53:"🌧️",55:"🌧️",61:"🌧️",63:"🌧️",65:"🌧️",
-      71:"❄️",73:"❄️",75:"❄️",80:"🌦️",81:"🌦️",82:"🌦️",
-      95:"⛈️",96:"⛈️",99:"⛈️"};
-    var DAYS = {"2026-06-26":"Fr, 26. Juni","2026-06-27":"Sa, 27. Juni","2026-06-28":"So, 28. Juni"};
-    var url = "https://api.brightsky.dev/weather?lat=50.63&lon=7.35&date=2026-06-26&last_date=2026-06-29&tz=Europe/Berlin";
-    fetch(url).then(function(r){return r.json()}).then(function(d){
-      var el = document.getElementById("weather");
-      if(!el||!d.weather) return;
-      var dailyMap = {};
-      d.weather.forEach(function(w){
-        var date = w.timestamp.substring(0,10);
-        if(!DAYS[date]) return;
-        if(!dailyMap[date]) dailyMap[date] = {temps:[], icons:[]};
-        dailyMap[date].temps.push(w.temperature);
-        if(w.icon) dailyMap[date].icons.push(w.icon);
-      });
-      var iconToWMO = {"clear-day":0,"clear-night":0,"partly-cloudy-day":2,"partly-cloudy-night":2,
-        "cloudy":3,"fog":45,"wind":3,"rain":61,"sleet":71,"snow":75,"hail":96,"thunderstorm":95};
-      var html = "";
-      Object.keys(DAYS).forEach(function(date){
-        var day = dailyMap[date];
-        if(!day) return;
-        var hi = Math.round(Math.max.apply(null, day.temps));
-        var lo = Math.round(Math.min.apply(null, day.temps));
-        var noon = day.icons[Math.floor(day.icons.length/2)] || "cloudy";
-        var code = iconToWMO[noon]; if(code===undefined) code=3;
-        var icon = WMO[code] || "☁️";
-        html += '<div class="weather-day">' +
-          '<div class="weather-day__label">' + DAYS[date] + '</div>' +
-          '<div class="weather-day__icon">' + icon + '</div>' +
-          '<div class="weather-day__temp">' + lo + '° / ' + hi + '°</div></div>';
-      });
-      el.innerHTML = html;
-    }).catch(function(){});
-  })();
-  </script>
   <script src="data.js?v=e8bdd50"></script>
   <script>!function(){var s=document.createElement('script');s.src='results.js?nc='+Date.now();s.onload=function(){var s2=document.createElement('script');s2.src='scores.js?nc='+Date.now();s2.onload=function(){var a=document.createElement('script');a.src='app.js?v=0766bf3';document.head.appendChild(a);};document.head.appendChild(s2);};document.head.appendChild(s);}()</script>
 

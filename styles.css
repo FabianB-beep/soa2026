@@ -267,6 +267,15 @@ input, select { font: inherit; color: inherit; }
   margin-bottom: 40px;
 }
 
+.hero__thanks {
+  max-width: 640px;
+  margin: 0 auto 40px;
+  text-align: center;
+  line-height: 1.6;
+  font-size: 1.25rem;
+  color: #fff;
+}
+
 .hero__countdown {
   display: flex;
   justify-content: center;
